@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/jacke/Documents/GitHub/Fizz",
-      "program": "c:/Users/jacke/Documents/GitHub/Fizz/build/Debug/outDebug",
+      "cwd": "c:/Users/jacke/Documents/GitHub/Fizz/Compiler",
+      "program": "c:/Users/jacke/Documents/GitHub/Fizz/Compiler/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

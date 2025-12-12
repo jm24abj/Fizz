@@ -39,10 +39,8 @@ class Token {
         }
 
         string to_string() {
-            return type + " " + lexeme;
+            return type + " : " + lexeme;
         }
-
-    
 };
 
 void addToken(TokenType token)
@@ -55,20 +53,41 @@ string next()
     return "\n";
 }
 
+bool isNumeric(char character)
+{
+    return (character >= '0' && character <= '9');
+}
+
+bool isChar(char character)
+{
+    return (character >= 'a' && character <= 'z');
+}
+
 void scanToken()
 {
     string text = next();
-    if (text == "(") {addToken(LEFT_PAREN);}
+
+    if (text == " ") {}
+    else if (text == "(") {addToken(LEFT_PAREN);}
     else if (text == ")") {addToken(RIGHT_PAREN);}
     else if (text == "{") {addToken(LEFT_BRACE);}
     else if (text == "}") {addToken(RIGHT_BRACE);}
     else if (text == ",") {addToken(COMMA);}
     else if (text == ".") {addToken(DOT);}
-    else if (text == "-") {addToken(MINUS);}
-    else if (text == "+") {addToken(PLUS);}
     else if (text == ";") {addToken(SEMICOLON);}
     else if (text == "*") {addToken(STAR);}
+    else if (text == "-") {addToken(MINUS);}
+    else if (text == "+") {addToken(PLUS);}
     else if (text == "&") {addToken(ADDRESS);}
+    else if (isNumeric('a')) {
+
+    } 
+    else if (isChar('a')) {
+
+    }
+    else {
+        
+    }
 }
 
 void scanSourceCode() 
@@ -76,15 +95,15 @@ void scanSourceCode()
     /* code */
 
     // Create a text string, which is used to output the text file
-    string myText;
+    string currentLine;
 
     // Read from the text file
     ifstream MyReadFile("ExampleSourceCode/program2.txt");
 
     // Use a while loop together with the getline() function to read the file line by line
-    while (getline (MyReadFile, myText)) {
+    while (getline(MyReadFile, currentLine)) {
         // Output the text from the file
-        cout << myText + "\n";
+        cout << currentLine + "\n";
     }
 
     // Close the file
