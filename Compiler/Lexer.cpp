@@ -109,29 +109,35 @@ bool scanToken(string unfinished,char current)
     return foundTerminator;
 }
 
-void scanSourceCode() 
+void scanSourceCode(string chosenFile) 
 {
-    /* code */
 
-    // Create a text string, which is used to output the text file
-    string currentLine;
+    string unfinishedToken; // holds a currently non-tokenable string as the loop may not have scanned full length of file yet ie 'ou' instead of keyword 'out'  
+    char currentChar; 
 
-    // Read from the text file
-    ifstream MyReadFile("ExampleSourceCode/program2.txt");
+    // Reads 'SourceCode' file character by character 
 
-    // Use a while loop together with the getline() function to read the file line by line
-    while (getline(MyReadFile, currentLine)) {
-        // Output the text from the file
-        cout << currentLine + "\n";
+    ifstream SourceCode(chosenFile);
+
+    if (SourceCode.fail()) {
+        cout << "ERROR LOADING FILE";
+    } else {
+        while (SourceCode.get(currentChar))
+        {
+            if (scanToken(unfinishedToken,currentChar)) { 
+                // has found and resolved new token and can reset
+                unfinishedToken = "";
+            } else {
+                unfinishedToken = unfinishedToken + currentChar;
+            }
+        }
     }
 
-    // Close the file
-    MyReadFile.close();
+    SourceCode.close();
 }
 
 int main(int argc, char const *argv[])
 {
-    /* code */
-    scanSourceCode();
+    scanSourceCode("ExampleSourceCode/program2.txt");
     return 0;
 }
