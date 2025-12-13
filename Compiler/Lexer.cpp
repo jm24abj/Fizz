@@ -59,31 +59,54 @@ bool isChar(char character)
     return (character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') || (character == '_');
 }
 
-void scanToken()
+bool isAlphaNumeric(char character) {
+    return (isChar(character) || isNumeric(character));
+}
+
+bool scanToken(string unfinished,char current)
 {
-    string text = next();
+    
+    // unfinished -> holds the current string that isnt currently related to any token (multi character tokens)
+    // current -> current character the lexer is scanning through, this will always be 1 char ahead of unfinished
+ 
+    bool foundTerminator = false;
 
-    if (text == " ") {}
-    else if (text == "(") {addToken(LEFT_PAREN);}
-    else if (text == ")") {addToken(RIGHT_PAREN);}
-    else if (text == "{") {addToken(LEFT_BRACE);}
-    else if (text == "}") {addToken(RIGHT_BRACE);}
-    else if (text == ",") {addToken(COMMA);}
-    else if (text == ".") {addToken(DOT);}
-    else if (text == ";") {addToken(SEMICOLON);}
-    else if (text == "*") {addToken(STAR);}
-    else if (text == "-") {addToken(MINUS);}
-    else if (text == "+") {addToken(PLUS);}
-    else if (text == "&") {addToken(ADDRESS);}
-    else if (isNumeric('a')) {
+    // looking for symbols that will terminate the longer keywords and identifiers
 
-    } 
-    else if (isChar('a')) {
-
+    if (isspace(current)) {
+        foundTerminator = true;
     }
-    else {
-        
+
+    switch (current) {
+        case '"': break;
+        case '(': addToken(LEFT_PAREN,"("); foundTerminator = true; break;
+        case ')': addToken(RIGHT_PAREN,")"); foundTerminator = true; break;
+        case '{': addToken(LEFT_BRACE,"{"); foundTerminator = true; break;
+        case '}': addToken(RIGHT_BRACE,"}"); foundTerminator = true; break;
+        case ',': addToken(COMMA,","); foundTerminator = true; break;
+        case '.': addToken(DOT,"."); foundTerminator = true; break;
+        case ';': addToken(SEMICOLON,";"); foundTerminator = true; break;
+        case '*': addToken(STAR,"*"); foundTerminator = true; break;
+        case '-': addToken(MINUS,"-"); foundTerminator = true; break;
+        case '+': addToken(PLUS,"+"); foundTerminator = true; break;
+        case '&': addToken(ADDRESS,"&"); foundTerminator = true; break;
+        case '=': addToken(EQUAL,"="); foundTerminator = true; break;
     }
+
+    // checking for longer reserved keywords such as int,bool etc
+
+    if (foundTerminator) {
+        if (unfinished == "out") {addToken(OUT,unfinished);}
+        else if (unfinished == "int") {addToken(INT,unfinished);}
+        else if (unfinished == "return") {addToken(OUT,unfinished);}
+        else {
+            // this must be some kind of identifier such as x or y or a function name etc
+            cout << "new identifier: " + unfinished;
+            cout << "\n";
+        }
+    }
+
+    return foundTerminator;
 }
 
 void scanSourceCode() 
