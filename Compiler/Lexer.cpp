@@ -43,14 +43,10 @@ class Token {
         }
 };
 
-void addToken(TokenType token)
+void addToken(TokenType token,string lex)
 {
-    cout << "Token Added";
-}
-
-string next()
-{
-    return "\n";
+    cout << lex;
+    cout << "\n";
 }
 
 bool isNumeric(char character)
