@@ -56,7 +56,7 @@ bool isNumeric(char character)
 
 bool isChar(char character)
 {
-    return (character >= 'a' && character <= 'z');
+    return (character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') || (character == '_');
 }
 
 void scanToken()
