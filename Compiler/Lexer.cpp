@@ -19,10 +19,10 @@ enum TokenType {
     NOT,EQUAL,
     GREATER,LESS,
 
-    AND,CLASS,ELSE,
+    AND,CLASS,ELSE,ELIF,
     FALSE,FUNCTION,FOR,
     IF,NULL_EMPTY,OR,
-    OUT,RETURN,THIS,WHILE
+    OUT,RETURN,WHILE,VOID
 };
 
 class Token {
@@ -39,7 +39,7 @@ class Token {
         }
 
         string str() {
-            return lexeme + " | line num " + to_string(line);
+            return lexeme + "| line num " + to_string(line);
         }
 };
 
@@ -75,18 +75,31 @@ void addIdentifier(string unfinished,int lineNumber) {
 
     // checking for longer reserved keywords such as int,bool etc
 
-    if (unfinished == "out") {addToken(OUT,unfinished,lineNumber);}
-    else if (unfinished == "int") {addToken(INT,unfinished,lineNumber);}
-    else if (unfinished == "String") {addToken(STRING,unfinished,lineNumber);}
-    else if (unfinished == "bool") {addToken(BOOL,unfinished,lineNumber);}
-    else if (unfinished == "Array") {addToken(ARRAY,unfinished,lineNumber);}
-    else if (unfinished == "float") {addToken(FLOAT,unfinished,lineNumber);}
-    else if (unfinished == "double") {addToken(DOUBLE,unfinished,lineNumber);}
-    else if (unfinished == "char") {addToken(CHAR,unfinished,lineNumber);}
-    else if (unfinished == "return") {addToken(OUT,unfinished,lineNumber);}
-    else if (unfinished == "const") {addToken(CONSTANT,unfinished,lineNumber);}
+    if (unfinished == "f") {addToken(FUNCTION,"function",lineNumber); return;}
+
+    if (unfinished == "out") {addToken(OUT,unfinished,lineNumber); return;}
+
+    else if (unfinished == "int") {addToken(INT,unfinished,lineNumber); return;}
+    else if (unfinished == "String") {addToken(STRING,unfinished,lineNumber); return;}
+    else if (unfinished == "bool") {addToken(BOOL,unfinished,lineNumber); return;}
+    else if (unfinished == "Array") {addToken(ARRAY,unfinished,lineNumber); return;}
+    else if (unfinished == "float") {addToken(FLOAT,unfinished,lineNumber); return;}
+    else if (unfinished == "void") {addToken(VOID,unfinished,lineNumber); return;}
+    else if (unfinished == "double") {addToken(DOUBLE,unfinished,lineNumber); return;}
+    else if (unfinished == "char") {addToken(CHAR,unfinished,lineNumber); return;}
+    else if (unfinished == "const") {addToken(CONSTANT,unfinished,lineNumber); return;}
+
+    else if (unfinished == "if") {addToken(IF,unfinished,lineNumber); return;}
+    else if (unfinished == "elif") {addToken(ELIF,unfinished,lineNumber); return;}
+    else if (unfinished == "else") {addToken(ELSE,unfinished,lineNumber); return;}
+    else if (unfinished == "while") {addToken(WHILE,unfinished,lineNumber); return;}
+    else if (unfinished == "for") {addToken(FOR,unfinished,lineNumber); return;}
+
+    else if (unfinished == "return") {addToken(OUT,unfinished,lineNumber); return;}
+
     else if (unfinished != ""){ // this must be some kind of identifier such as x or y or a function name etc
         addToken(IDENTIFIER,unfinished,lineNumber);    
+        return; 
     }
 }
 
@@ -145,7 +158,8 @@ void scanSourceCode(string chosenFile)
 {
 
     string unfinishedToken; // holds a currently non-tokenable string as the loop may not have scanned full length of file yet ie 'ou' instead of keyword 'out'  
-    
+    unfinishedToken = "";
+
     scanFlags flags;
 
     flags.justResolved = false;
@@ -163,14 +177,13 @@ void scanSourceCode(string chosenFile)
     if (SourceCode.fail()) {
         cout << "ERROR LOADING FILE";
     } else {
-
         while (getline(SourceCode, currentLine)) { // determines line number
             for (int i = 0; i < currentLine.size(); i++) 
             {
                 currentChar = currentLine[i];
 
                 flags = scanToken(unfinishedToken,currentChar,flags.inString,lineNum);
-
+                
                 if (flags.commentFound) {
                     unfinishedToken = "";
                     break;
@@ -183,6 +196,8 @@ void scanSourceCode(string chosenFile)
                         unfinishedToken = unfinishedToken + currentChar;
                     }
                 }
+
+                //cout << "done " + unfinishedToken + "\n";
             }
 
             lineNum = lineNum + 1;
@@ -194,6 +209,6 @@ void scanSourceCode(string chosenFile)
 
 int main(int argc, char const *argv[])
 {
-    scanSourceCode("ExampleSourceCode/program4.txt");
+    scanSourceCode("ExampleSourceCode/program5.txt");
     return 0;
 }

@@ -1,0 +1,15 @@
+f void newFunction() {
+    int i = 1;
+
+    while i <= n {
+        if i % 15 == 0 {
+            out("fizzbuzz");
+        } elif i % 3 == 0 {
+            out("fizz");
+        } elif i % 5 == 0 {
+            out("buzz");
+        } else {
+            out(i);
+        }
+    }
+}
