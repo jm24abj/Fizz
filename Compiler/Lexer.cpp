@@ -38,8 +38,8 @@ class Token {
             line = token_line;
         }
 
-        string to_string() {
-            return type + " : " + lexeme;
+        string str() {
+            return lexeme + " | line num " + to_string(line);
         }
 };
 
@@ -47,11 +47,13 @@ struct scanFlags
 {
     bool justResolved;
     bool inString;
+    bool commentFound;
 };
 
-void addToken(TokenType token,string lex)
+void addToken(TokenType token,string lex,int lineNumber)
 {
-    cout << lex;
+    Token newToken(token,lex,lineNumber);
+    cout << newToken.str();
     cout << "\n";
 }
 
@@ -69,27 +71,26 @@ bool isAlphaNumeric(char character) {
     return (isChar(character) || isNumeric(character));
 }
 
-void addIdentifier(string unfinished) {
+void addIdentifier(string unfinished,int lineNumber) {
 
     // checking for longer reserved keywords such as int,bool etc
 
-    if (unfinished == "out") {addToken(OUT,unfinished);}
-    else if (unfinished == "int") {addToken(INT,unfinished);}
-    else if (unfinished == "String") {addToken(STRING,unfinished);}
-    else if (unfinished == "bool") {addToken(BOOL,unfinished);}
-    else if (unfinished == "Array") {addToken(ARRAY,unfinished);}
-    else if (unfinished == "float") {addToken(FLOAT,unfinished);}
-    else if (unfinished == "double") {addToken(DOUBLE,unfinished);}
-    else if (unfinished == "char") {addToken(CHAR,unfinished);}
-    else if (unfinished == "return") {addToken(OUT,unfinished);}
-    else if (unfinished == "const") {addToken(CONSTANT,unfinished);}
-    else if (unfinished != ""){
-        // this must be some kind of identifier such as x or y or a function name etc
-        addToken(IDENTIFIER,unfinished);    
+    if (unfinished == "out") {addToken(OUT,unfinished,lineNumber);}
+    else if (unfinished == "int") {addToken(INT,unfinished,lineNumber);}
+    else if (unfinished == "String") {addToken(STRING,unfinished,lineNumber);}
+    else if (unfinished == "bool") {addToken(BOOL,unfinished,lineNumber);}
+    else if (unfinished == "Array") {addToken(ARRAY,unfinished,lineNumber);}
+    else if (unfinished == "float") {addToken(FLOAT,unfinished,lineNumber);}
+    else if (unfinished == "double") {addToken(DOUBLE,unfinished,lineNumber);}
+    else if (unfinished == "char") {addToken(CHAR,unfinished,lineNumber);}
+    else if (unfinished == "return") {addToken(OUT,unfinished,lineNumber);}
+    else if (unfinished == "const") {addToken(CONSTANT,unfinished,lineNumber);}
+    else if (unfinished != ""){ // this must be some kind of identifier such as x or y or a function name etc
+        addToken(IDENTIFIER,unfinished,lineNumber);    
     }
 }
 
-scanFlags scanToken(string unfinished,char current,bool inString)
+scanFlags scanToken(string unfinished,char current,bool inString,int lineNumber)
 {
     
     // unfinished -> holds the current string that isnt currently related to any token (multi character tokens)
@@ -102,10 +103,10 @@ scanFlags scanToken(string unfinished,char current,bool inString)
         inString = !inString;
 
         if (inString) {
-            addToken(QUOTATION, "QUOTATION");
+            addToken(QUOTATION, "QUOTATION",lineNumber);
         } else {
-            addIdentifier(unfinished);
-            addToken(QUOTATION,"QUOTATION");
+            addIdentifier(unfinished,lineNumber);
+            addToken(QUOTATION,"QUOTATION",lineNumber);
         }
 
         foundTerminator = true;
@@ -116,36 +117,44 @@ scanFlags scanToken(string unfinished,char current,bool inString)
          // looking for symbols that will terminate the longer keywords and identifiers
 
         if (isspace(current)) {
-            addIdentifier(unfinished); 
+            addIdentifier(unfinished,lineNumber); 
             foundTerminator = true;
         }
 
         switch (current) {
-            case '(': addIdentifier(unfinished); addToken(LEFT_PAREN,"("); foundTerminator = true; break;
-            case ')': addIdentifier(unfinished); addToken(RIGHT_PAREN,")"); foundTerminator = true; break;
-            case '{': addIdentifier(unfinished); addToken(LEFT_BRACE,"{"); foundTerminator = true; break;
-            case '}': addIdentifier(unfinished); addToken(RIGHT_BRACE,"}"); foundTerminator = true; break;
-            case ',': addIdentifier(unfinished); addToken(COMMA,","); foundTerminator = true; break;
-            case '.': addIdentifier(unfinished); addToken(DOT,"."); foundTerminator = true; break;
-            case ';': addIdentifier(unfinished); addToken(SEMICOLON,";"); foundTerminator = true; break;
-            case '*': addIdentifier(unfinished); addToken(STAR,"*"); foundTerminator = true; break;
-            case '-': addIdentifier(unfinished); addToken(MINUS,"-"); foundTerminator = true; break;
-            case '+': addIdentifier(unfinished); addToken(PLUS,"+"); foundTerminator = true; break;
-            case '&': addIdentifier(unfinished); addToken(ADDRESS,"&"); foundTerminator = true; break;
-            case '=': addIdentifier(unfinished); addToken(EQUAL,"="); foundTerminator = true; break;
+            case '#': foundTerminator = true; return {foundTerminator,inString,true}; // checks for single line comments
+            case '(': addIdentifier(unfinished,lineNumber); addToken(LEFT_PAREN,"(",lineNumber); foundTerminator = true; break;
+            case ')': addIdentifier(unfinished,lineNumber); addToken(RIGHT_PAREN,")",lineNumber); foundTerminator = true; break;
+            case '{': addIdentifier(unfinished,lineNumber); addToken(LEFT_BRACE,"{",lineNumber); foundTerminator = true; break;
+            case '}': addIdentifier(unfinished,lineNumber); addToken(RIGHT_BRACE,"}",lineNumber); foundTerminator = true; break;
+            case ',': addIdentifier(unfinished,lineNumber); addToken(COMMA,",",lineNumber); foundTerminator = true; break;
+            case '.': addIdentifier(unfinished,lineNumber); addToken(DOT,".",lineNumber); foundTerminator = true; break;
+            case ';': addIdentifier(unfinished,lineNumber); addToken(SEMICOLON,";",lineNumber); foundTerminator = true; break;
+            case '*': addIdentifier(unfinished,lineNumber); addToken(STAR,"*",lineNumber); foundTerminator = true; break;
+            case '-': addIdentifier(unfinished,lineNumber); addToken(MINUS,"-",lineNumber); foundTerminator = true; break;
+            case '+': addIdentifier(unfinished,lineNumber); addToken(PLUS,"+",lineNumber); foundTerminator = true; break;
+            case '&': addIdentifier(unfinished,lineNumber); addToken(ADDRESS,"&",lineNumber); foundTerminator = true; break;
+            case '=': addIdentifier(unfinished,lineNumber); addToken(EQUAL,"=",lineNumber); foundTerminator = true; break;
         }
     }
 
-    return {foundTerminator,inString};
+    return {foundTerminator,inString,false};
 }
 
 void scanSourceCode(string chosenFile) 
 {
 
     string unfinishedToken; // holds a currently non-tokenable string as the loop may not have scanned full length of file yet ie 'ou' instead of keyword 'out'  
+    
     scanFlags flags;
-    bool inString = false;
+
+    flags.justResolved = false;
+    flags.inString = false;
+    flags.commentFound = false;
+
+    string currentLine;
     char currentChar; 
+    int lineNum = 1;
 
     // Reads 'SourceCode' file character by character 
 
@@ -154,18 +163,29 @@ void scanSourceCode(string chosenFile)
     if (SourceCode.fail()) {
         cout << "ERROR LOADING FILE";
     } else {
-        while (SourceCode.get(currentChar))
-        {
-            
-            flags = scanToken(unfinishedToken,currentChar,inString);
-            inString = flags.inString;
 
-            if (flags.justResolved) { 
-                // has found and resolved new token and can reset
-                unfinishedToken = "";
-            } else {
-                unfinishedToken = unfinishedToken + currentChar;
+        while (getline(SourceCode, currentLine)) { // determines line number
+            for (int i = 0; i < currentLine.size(); i++) 
+            {
+                currentChar = currentLine[i];
+
+                flags = scanToken(unfinishedToken,currentChar,flags.inString,lineNum);
+
+                if (flags.commentFound) {
+                    unfinishedToken = "";
+                    break;
+                } else {
+
+                    if (flags.justResolved) { 
+                        // has found and resolved new token and can reset
+                        unfinishedToken = "";
+                    } else {
+                        unfinishedToken = unfinishedToken + currentChar;
+                    }
+                }
             }
+
+            lineNum = lineNum + 1;
         }
     }
 
@@ -174,6 +194,6 @@ void scanSourceCode(string chosenFile)
 
 int main(int argc, char const *argv[])
 {
-    scanSourceCode("ExampleSourceCode/program2.txt");
+    scanSourceCode("ExampleSourceCode/program4.txt");
     return 0;
 }
