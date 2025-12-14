@@ -11,10 +11,10 @@ enum TokenType {
     LEFT_BRACE,RIGHT_BRACE,
     COMMA,DOT,MINUS,PLUS,
     SEMICOLON,SLASH,STAR,ADDRESS,
+    QUOTATION,
 
-    STRING,INT,FLOAT,
-    CONST,BOOL,
-    CHAR,POINTER,
+    STRING,BOOL,CHAR,INT,
+    FLOAT,ARRAY,DOUBLE,CONSTANT,
 
     NOT,EQUAL,
     GREATER,LESS,
@@ -41,6 +41,12 @@ class Token {
         string to_string() {
             return type + " : " + lexeme;
         }
+};
+
+struct scanFlags
+{
+    bool justResolved;
+    bool inString;
 };
 
 void addToken(TokenType token,string lex)
@@ -71,7 +77,16 @@ bool scanToken(string unfinished,char current)
  
     bool foundTerminator = false;
 
-    // looking for symbols that will terminate the longer keywords and identifiers
+    if (current == '"') {
+
+        inString = !inString;
+
+        if (inString) {
+            addToken(QUOTATION, "QUOTATION");
+        } else {
+            addIdentifier(unfinished);
+            addToken(QUOTATION,"QUOTATION");
+        }
 
     if (isspace(current)) {
         foundTerminator = true;
@@ -113,6 +128,8 @@ void scanSourceCode(string chosenFile)
 {
 
     string unfinishedToken; // holds a currently non-tokenable string as the loop may not have scanned full length of file yet ie 'ou' instead of keyword 'out'  
+    scanFlags flags;
+    bool inString = false;
     char currentChar; 
 
     // Reads 'SourceCode' file character by character 
@@ -124,7 +141,11 @@ void scanSourceCode(string chosenFile)
     } else {
         while (SourceCode.get(currentChar))
         {
-            if (scanToken(unfinishedToken,currentChar)) { 
+            
+            flags = scanToken(unfinishedToken,currentChar,inString);
+            inString = flags.inString;
+
+            if (flags.justResolved) { 
                 // has found and resolved new token and can reset
                 unfinishedToken = "";
             } else {

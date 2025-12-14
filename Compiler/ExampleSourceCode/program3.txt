@@ -1,0 +1,4 @@
+int j = 9;
+String x = "hello&*+= there;";
+int i = j + x;
+out(i);
