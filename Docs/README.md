@@ -1,4 +1,4 @@
-# The Fizz Language
+# The Fizz Language [![wakatime](https://wakatime.com/badge/user/86f08dc1-5098-42c2-b193-5a05699baa48/project/ff180f99-72d7-48f5-87ee-f932bc033f74.svg)](https://wakatime.com/badge/user/86f08dc1-5098-42c2-b193-5a05699baa48/project/ff180f99-72d7-48f5-87ee-f932bc033f74)
 ***Developed by Jack Milner***
 \
 \
