@@ -14,6 +14,9 @@
   * [Syntax](#syntax)
 * [Lexer](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
 * [Parser](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+  * [Terminals](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md#full-bnf)
+  * [Non Terminals](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md#non-terminals)
+  * [Full BNF](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md#terminals)
 * [Abstract Syntax Tree](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
 * [Parser](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
 
