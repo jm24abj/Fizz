@@ -3,25 +3,39 @@
 \
 \
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/jackmilner)
-## Prerequisites
-This is my own programming language written to reduce time typing and created to learn about the creation of languages and compilers for my own personal growth as a computer scientist. The bulk of program is written in **C++** and contains a **Lexer**, **Abstract syntax tree**, **Parser** and a module for converting IR code to an object file. This project also makes use of **LLVM** which is the software used to make the C compiler CLANG. 
 
-## Summary
+## Table of contents
+
+
+* [Overview](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md)
+  * [Prerequisites](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#prerequisites)
+  * [Summary](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#summary)
+  * [Data-Types](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#data-types)
+  * [Syntax](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#syntax)
+* [Lexer](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+* [Parser](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+* [Abstract Syntax Tree](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+* [Parser](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+
+## Prerequisites
+This is my own programming language written to reduce time typing and created to learn about the creation of languages and compilers for my own personal growth as a computer scientist. The program is written in **C++** and contains a **Lexer**, **Abstract syntax tree**, **Parser** and a module for converting IR code to an object file. This project also makes use of **LLVM** which is the software used to make the C compiler CLANG. 
+
+### Summary
 My language is...
 * A compiled language written for simplicity and reduced typing
 * Statically typed
 * Contains my own compiler written in C++
 * Makes use of LLVM for IR to source code translation
-## Data Types
-* int
-* bool
-* str
-* const
-* point
-* float
-* null
-* arrays are data types with [] at the end (int[],str[], etc...)
-## Syntax
+### Data Types
+| Data  Type        | Description                                                         |
+| :---------------- | :-----------------------------------------------------------------: |
+| String            |  |
+| int               |  |
+| bool              |  |
+| float             |  |
+| double            |  |
+| char              |  |
+### Syntax
 * out() - displays text to the screen
 * f - function declaration
 * while
