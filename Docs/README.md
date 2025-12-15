@@ -6,29 +6,35 @@
 
 ## Table of contents
 
-
-* [Overview](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md)
-  * [Prerequisites](#prerequisites)
-  * [Summary](#summary)
+* [Fizz Language](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md)
+  * [Overview](#overview)
   * [Data-Types](#data-types)
   * [Syntax](#syntax)
+  * [Example Programs](https://github.com/jm24abj/Fizz/tree/main/Compiler/ExampleSourceCode)
 * [Lexer](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+  * [Tokens]()
+  * [Scanning Method]()
 * [Parser](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
   * [Full BNF](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md#full-bnf)
   * [Terminals](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md#terminals)
   * [Non Terminals](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md#non-terminals)
-* [Abstract Syntax Tree](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
-* [Parser](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+  * [Abstract Syntax Tree](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
+* [Semantic Analyser]()
+  * [Type Checking]()
+  * [Declaration Checking]()
+  * [Scope Resolution]()
+  * [Control Flow Analysis]()
 
-## Prerequisites
+### Overview
 This is my own programming language written to reduce time typing and created to learn about the creation of languages and compilers for my own personal growth as a computer scientist. The program is written in **C++** and contains a **Lexer**, **Abstract syntax tree**, **Parser** and a module for converting IR code to an object file. This project also makes use of **LLVM** which is the software used to make the C compiler CLANG. 
-
-### Summary
+\
+\
 My language is...
 * A compiled language written for simplicity and reduced typing
 * Statically typed
 * Contains my own compiler written in C++
 * Makes use of LLVM for IR to source code translation
+  
 ### Data Types
 | Data  Type        | Description                                                         |
 | :---------------- | :-----------------------------------------------------------------: |
