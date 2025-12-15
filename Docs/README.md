@@ -8,10 +8,10 @@
 
 
 * [Overview](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md)
-  * [Prerequisites](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#prerequisites)
-  * [Summary](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#summary)
-  * [Data-Types](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#data-types)
-  * [Syntax](https://github.com/jm24abj/Fizz/edit/main/Docs/README.md#syntax)
+  * [Prerequisites](#prerequisites)
+  * [Summary](#summary)
+  * [Data-Types](#data-types)
+  * [Syntax](#syntax)
 * [Lexer](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
 * [Parser](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
 * [Abstract Syntax Tree](https://github.com/jm24abj/Fizz/blob/main/Docs/ParserBNF.md)
