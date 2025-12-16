@@ -207,8 +207,3 @@ void scanSourceCode(string chosenFile)
     SourceCode.close();
 }
 
-int main(int argc, char const *argv[])
-{
-    scanSourceCode("ExampleSourceCode/program5.txt");
-    return 0;
-}

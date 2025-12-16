@@ -9,13 +9,22 @@ this is to show conceptionally how the parser works, demonstrate how different d
 <DataType> ::= int | float | double | String | bool | char
 <Keyword> ::= <DataType> | <DataType><Dimension>
 
+<Number> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+<LowerCase> ::= a | b | c | d | ... | z
+<UpperCase> ::= A | B | C | D | ... | Z
+<Letter> ::= <LowerCase> | <UpperCase>
+
 <IdentifierPrefix> ::= <Letter> | _
 <ValidIdentifierTail> ::= <Letter> | _ | <Number>
 <IdentifierTail> ::= <ValidIdentifierTail><IdentifierTail> | ε
 <Identifier> ::= <IdentifierPrefix><IdentifierTail>
 
+<Operator> ::= + | - | / | * | % | and | or | not | xor | xnor
+<Expression> ::= <Identifier><Operator><Expression> | <Identifier>
+<Assignment> ::= <Keyword> <Identifier> = <Expression> SEMICOLON
+
 <Arguments> ::= <Identifier> | <Arguments> COMMA <Identifier>
-<Call> ::= <Identifier> LEFT_PAREN <Arguments> RIGHT_PAREN
+<Call> ::= <Identifier> LEFT_PAREN <Arguments> RIGHT_PAREN SEMICOLON
 
 <Statement> ::=  <Assignment> | <Call> | RETURN | RETURN <Identifier>
 <Body> ::= ε | <Statement> | <Statement><Body>
@@ -25,7 +34,7 @@ this is to show conceptionally how the parser works, demonstrate how different d
 <FunctionParameters> ::= <Parameters> | ε
 <Function> ::= f <Keyword> LEFT_PAREN <FunctionParameters> RIGHT_PAREN LEFT_BRACE <Body> RIGHT_BRACE
 <Procedure> ::= f void LEFT_PAREN <FunctionParameters> RIGHT_PAREN LEFT_BRACE <Body> RIGHT_BRACE
-<Declaration> ::= <Function> | <Procedure>
+<Declaration> ::= <Function> | <Procedure> 
 <Program> ::= ε | <Declaration> | <Declaration><Program>
 ```
 
