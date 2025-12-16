@@ -1,4 +1,5 @@
-#include <string>
+#include "Lexer.h"
+
 using namespace std;
 
 char ahead_token = ' ';

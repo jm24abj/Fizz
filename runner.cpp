@@ -1,5 +1,3 @@
-#include <string>
-#include "Compiler/Lexer.h"
 #include "Compiler/Parser.h"
 
 using namespace std;

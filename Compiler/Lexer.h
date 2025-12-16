@@ -1,8 +1,11 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 
 using namespace std;
+
+vector<Token> tokenStream = {};
 
 enum TokenType {
     IDENTIFIER,
@@ -53,6 +56,7 @@ struct scanFlags
 void addToken(TokenType token,string lex,int lineNumber)
 {
     Token newToken(token,lex,lineNumber);
+    tokenStream.push_back(newToken);
     cout << newToken.str();
     cout << "\n";
 }
@@ -156,7 +160,7 @@ scanFlags scanToken(string unfinished,char current,bool inString,int lineNumber)
 
 void scanSourceCode(string chosenFile) 
 {
-
+    tokenStream.clear();
     string unfinishedToken; // holds a currently non-tokenable string as the loop may not have scanned full length of file yet ie 'ou' instead of keyword 'out'  
     unfinishedToken = "";
 
