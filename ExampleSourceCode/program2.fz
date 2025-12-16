@@ -1,5 +1,5 @@
 String j = "hello";
 int x = 7;
 int p = x;
-p = 1
+p = 1;
 int i = 8;

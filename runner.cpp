@@ -9,5 +9,5 @@ void compile(string src) {
 
 int main(int argc, char const *argv[])
 {
-    compile("ExampleSourceCode/program2.txt");
+    compile("ExampleSourceCode/program2.fz");
 }

@@ -65,8 +65,8 @@ void addToken(TokenType token,string lex,int lineNumber)
 {
     Token newToken(token,lex,lineNumber);
     tokenStream.push_back(newToken);
-    cout << newToken.str();
-    cout << "\n";
+    //cout << newToken.str();
+    //cout << "\n";
 }
 
 bool isNumeric(char character)

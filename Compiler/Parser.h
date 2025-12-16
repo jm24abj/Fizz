@@ -7,8 +7,8 @@ int TokenPlace = 0;
 void next() {
     ahead_token = tokenStream.at(TokenPlace);
     TokenPlace = TokenPlace + 1;
-    cout << ahead_token.lexeme;
-    cout << "\n";
+    //cout << ahead_token.lexeme;
+    //cout << "\n";
     return; 
 }
 
