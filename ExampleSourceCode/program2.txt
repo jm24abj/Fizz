@@ -1,4 +1,5 @@
-int j = 9;
+String j = "hello";
 int x = 7;
-int i = j + x;
-out(i);
+int p = x;
+p = 1
+int i = 8;

@@ -2,7 +2,12 @@
 
 using namespace std;
 
+void compile(string src) {
+    scanSourceCode(src);
+    beginParse();
+}
+
 int main(int argc, char const *argv[])
 {
-    scanSourceCode("ExampleSourceCode/program5.txt");
+    compile("ExampleSourceCode/program2.txt");
 }

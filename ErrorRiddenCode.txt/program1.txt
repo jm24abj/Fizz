@@ -1,0 +1,4 @@
+int j = 9
+int x = 7;
+int i = j + x;
+out(i);

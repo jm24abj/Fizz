@@ -5,9 +5,8 @@
 
 using namespace std;
 
-vector<Token> tokenStream = {};
-
 enum TokenType {
+    PROGRAM,
     IDENTIFIER,
     
     LEFT_PAREN,RIGHT_PAREN,
@@ -21,11 +20,14 @@ enum TokenType {
 
     NOT,EQUAL,
     GREATER,LESS,
+    TRUE,FALSE,
 
     AND,CLASS,ELSE,ELIF,
-    FALSE,FUNCTION,FOR,
+    FUNCTION,FOR,
     IF,NULL_EMPTY,OR,
-    OUT,RETURN,WHILE,VOID
+    OUT,RETURN,WHILE,VOID,
+
+    ParsingSuccess
 };
 
 class Token {
@@ -34,6 +36,10 @@ class Token {
         TokenType type;
         string lexeme;
         int line;
+
+        Token() {
+            
+        }
 
         Token(TokenType token_type, string lex, int token_line) {
             type = token_type;
@@ -52,6 +58,8 @@ struct scanFlags
     bool inString;
     bool commentFound;
 };
+
+vector<Token> tokenStream = {};
 
 void addToken(TokenType token,string lex,int lineNumber)
 {
@@ -83,26 +91,29 @@ void addIdentifier(string unfinished,int lineNumber) {
 
     if (unfinished == "out") {addToken(OUT,unfinished,lineNumber); return;}
 
-    else if (unfinished == "int") {addToken(INT,unfinished,lineNumber); return;}
-    else if (unfinished == "String") {addToken(STRING,unfinished,lineNumber); return;}
-    else if (unfinished == "bool") {addToken(BOOL,unfinished,lineNumber); return;}
-    else if (unfinished == "Array") {addToken(ARRAY,unfinished,lineNumber); return;}
-    else if (unfinished == "float") {addToken(FLOAT,unfinished,lineNumber); return;}
-    else if (unfinished == "void") {addToken(VOID,unfinished,lineNumber); return;}
-    else if (unfinished == "double") {addToken(DOUBLE,unfinished,lineNumber); return;}
-    else if (unfinished == "char") {addToken(CHAR,unfinished,lineNumber); return;}
-    else if (unfinished == "const") {addToken(CONSTANT,unfinished,lineNumber); return;}
+    else if (unfinished.compare("int") == 0) {addToken(INT,unfinished,lineNumber); return;}
+    else if (unfinished.compare("String") == 0) {addToken(STRING,unfinished,lineNumber); return;}
+    else if (unfinished.compare("bool") == 0) {addToken(BOOL,unfinished,lineNumber); return;}
+    else if (unfinished.compare("Array") == 0) {addToken(ARRAY,unfinished,lineNumber); return;}
+    else if (unfinished.compare("float") == 0) {addToken(FLOAT,unfinished,lineNumber); return;}
+    else if (unfinished.compare("void") == 0) {addToken(VOID,unfinished,lineNumber); return;}
+    else if (unfinished.compare("double") == 0) {addToken(DOUBLE,unfinished,lineNumber); return;}
+    else if (unfinished.compare("char") == 0) {addToken(CHAR,unfinished,lineNumber); return;}
+    else if (unfinished.compare("const") == 0) {addToken(CONSTANT,unfinished,lineNumber); return;}
 
-    else if (unfinished == "if") {addToken(IF,unfinished,lineNumber); return;}
-    else if (unfinished == "elif") {addToken(ELIF,unfinished,lineNumber); return;}
-    else if (unfinished == "else") {addToken(ELSE,unfinished,lineNumber); return;}
-    else if (unfinished == "while") {addToken(WHILE,unfinished,lineNumber); return;}
-    else if (unfinished == "for") {addToken(FOR,unfinished,lineNumber); return;}
+    else if (unfinished.compare("true")  == 0){addToken(TRUE,unfinished,lineNumber); return;}
+    else if (unfinished.compare("false") == 0) {addToken(FALSE,unfinished,lineNumber); return;}
 
-    else if (unfinished == "return") {addToken(OUT,unfinished,lineNumber); return;}
+    else if (unfinished.compare("if") == 0){addToken(IF,unfinished,lineNumber); return;}
+    else if (unfinished.compare("elif") == 0) {addToken(ELIF,unfinished,lineNumber); return;}
+    else if (unfinished.compare("else") == 0) {addToken(ELSE,unfinished,lineNumber); return;}
+    else if (unfinished.compare("while") == 0) {addToken(WHILE,unfinished,lineNumber); return;}
+    else if (unfinished.compare("for") == 0) {addToken(FOR,unfinished,lineNumber); return;}
 
-    else if (unfinished != ""){ // this must be some kind of identifier such as x or y or a function name etc
-        addToken(IDENTIFIER,unfinished,lineNumber);    
+    else if (unfinished.compare("return") == 0) {addToken(OUT,unfinished,lineNumber); return;}
+
+    else if (unfinished.compare("") != 0) { // this must be some kind of identifier such as x or y or a function name etc
+        addToken(IDENTIFIER,"ID: " + unfinished,lineNumber);    
         return; 
     }
 }
