@@ -13,7 +13,7 @@ enum TokenType {
     LEFT_BRACE,RIGHT_BRACE,
     COMMA,DOT,MINUS,PLUS,
     SEMICOLON,SLASH,STAR,ADDRESS,
-    QUOTATION,
+    QUOTATION,MOD,
 
     STRING,BOOL,CHAR,INT,
     FLOAT,ARRAY,DOUBLE,CONSTANT,
@@ -27,6 +27,7 @@ enum TokenType {
     IF,NULL_EMPTY,OR,
     OUT,RETURN,WHILE,VOID,
 
+    ERR,
     ParsingSuccess
 };
 
@@ -219,6 +220,16 @@ void scanSourceCode(string chosenFile)
         }
     }
 
+    //cout << "Scanning complete. Whats left: " + unfinishedToken + "\n";
+
+    if (unfinishedToken.compare("") != 0) {  // adds any remaining unfinished tokens at end of file
+        // if this occurs the parser will throw an error
+        addIdentifier(unfinishedToken,lineNum);
+        addToken(ERR,"",lineNum);
+        
+    }
+
+    addToken(ParsingSuccess,"",lineNum);
     SourceCode.close();
 }
 

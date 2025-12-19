@@ -1,21 +1,52 @@
 #include "Lexer.h"
 using namespace std;
 
+// Recursive descent parser implementation
+
 Token ahead_token;
 int TokenPlace = 0;
 
 void next() {
-    ahead_token = tokenStream.at(TokenPlace);
-    TokenPlace = TokenPlace + 1;
-    //cout << ahead_token.lexeme;
-    //cout << "\n";
+    if (TokenPlace < tokenStream.size()) {
+        ahead_token = tokenStream.at(TokenPlace);
+        TokenPlace = TokenPlace + 1;
+        //cout << "Next token: " + ahead_token.str() + "\n";
+    } else { 
+        cout << "No more tokens to read.\n";
+    }
     return; 
 }
 
+TokenType peekNext() {
+    if (TokenPlace + 1 < tokenStream.size()) {
+        return tokenStream.at(TokenPlace).type;
+    }
+    return NULL_EMPTY;
+}
+
 void showError(string contextText) {
+    cout << "\n====================ERROR====================";
     cout << "\n" + contextText;
     cout << "\n";
-    cout << "\nError on line " + to_string(ahead_token.line-1) + ".";
+    if (ahead_token.line == 1) {
+        cout << "\nError on line " + to_string(ahead_token.line) + ".";
+    } else {
+        cout << "\nError on line " + to_string(ahead_token.line-1) + ".";
+    }
+    cout << "\n=============================================\n";
+}
+
+void showError(string contextText, int startingLine) {
+    cout << "\n====================ERROR====================";
+    cout << "\n" + contextText;
+    cout << "\n";
+    if (ahead_token.line == 1) {
+        cout << "\nError on line " + to_string(ahead_token.line) + ".";
+    } else {
+        cout << "\nError on line " + to_string(ahead_token.line-1) + ".";
+    }
+    cout << " Starting on line " + to_string(startingLine) + ".";
+    cout << "\n=============================================\n";
 }
 
 void function() {
@@ -25,40 +56,69 @@ void function() {
     }
 }
 
-void statementTerminator() {
+bool stringContents(int startingLine) {
     next();
     switch (ahead_token.type) {
-        case SEMICOLON: break;
-        default:
-            showError("No statement terminator");
-    } 
-}
-
-void endString() {
-    next();
-    switch (ahead_token.type) {
-        case QUOTATION: statementTerminator(); break;
-        default:
-            showError("didnt end string");
-    }
-}
-
-void stringContents() {
-    next();
-    switch (ahead_token.type) {
-        case IDENTIFIER: endString(); break;
+        case IDENTIFIER: 
+            if (peekNext() != QUOTATION) {
+                showError("String not terminated", startingLine);
+                return false;
+            } else {
+                next(); // consumes ending quotation
+                return true;
+            }
+            break;
         default:
             showError("invalid string contents");
     }
+    return false;
 }
 
-void equals() {
+bool operatorOrTerminator() {
     next();
     switch (ahead_token.type) {
-        case QUOTATION: stringContents(); break;
-        case TRUE: statementTerminator(); break;
-        case FALSE: statementTerminator(); break;
-        case IDENTIFIER: statementTerminator(); break;
+        case PLUS: return true; break;
+        case MINUS: return true; break;
+        case STAR: return true; break;
+        case SLASH: return true; break;
+        case MOD: return true; break;
+        case SEMICOLON: return false; break;
+        default:
+            showError("Assignment must be followed by operator or statement terminator");
+    }
+
+    return false;
+}
+
+void continuedAssignment() {
+    while (operatorOrTerminator()) {
+        next();
+        switch (ahead_token.type) {
+            case QUOTATION: stringContents(ahead_token.line); break;
+            case TRUE: break;
+            case FALSE: break;
+            case IDENTIFIER: break;
+            default:
+                showError("invalid continued assignment");
+        }
+    }
+
+    if (ahead_token.type != SEMICOLON) {
+        showError("Statement must end with a semicolon");
+    }
+}
+
+void assigment() {
+    next();
+    switch (ahead_token.type) {
+        case QUOTATION: 
+            if (stringContents(ahead_token.line)) { 
+                continuedAssignment(); 
+            }
+            break;
+        case TRUE: continuedAssignment(); break;
+        case FALSE: continuedAssignment(); break;
+        case IDENTIFIER: continuedAssignment(); break;
         default:
             showError("invalid assignment");
     }
@@ -67,7 +127,7 @@ void equals() {
 void identifier() {
     next();
     switch (ahead_token.type) {
-        case EQUAL: equals(); break;
+        case EQUAL: assigment(); break;
         default:
             showError("invalid operator");
     }
@@ -111,10 +171,6 @@ void testRecievedTokens() { // for debugging (prints out tokens one after the ot
 } 
 
 void beginParse() {
-    cout << to_string(tokenStream.size()) + ":";
-    tokenStream.push_back(Token(ParsingSuccess,"",0));
-    cout << to_string(tokenStream.size()) + "\n";
-
     int max = tokenStream.size();
 
     while ((ahead_token.type == SEMICOLON || TokenPlace == 0) && TokenPlace + 1 < max) {
@@ -125,6 +181,6 @@ void beginParse() {
     
     next();
     if (ahead_token.type == ParsingSuccess) {
-        cout << "Success!";
+        cout << "\n\n\nSuccess!\n\n\n";
     }
 }

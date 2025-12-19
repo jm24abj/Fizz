@@ -3,7 +3,9 @@
 using namespace std;
 
 void compile(string src) {
+    cout << "Compiling file: " + src + "\n";
     scanSourceCode(src);
+    cout << "Scan complete. Beginning parse...\n";
     beginParse();
 }
 
