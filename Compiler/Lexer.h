@@ -2,56 +2,9 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "Globals.h"
 
 using namespace std;
-
-enum TokenType {
-    PROGRAM,
-    IDENTIFIER,
-    
-    LEFT_PAREN,RIGHT_PAREN,
-    LEFT_BRACE,RIGHT_BRACE,
-    COMMA,DOT,MINUS,PLUS,
-    SEMICOLON,SLASH,STAR,ADDRESS,
-    QUOTATION,MOD,
-
-    STRING,BOOL,CHAR,INT,
-    FLOAT,ARRAY,DOUBLE,CONSTANT,
-
-    NOT,EQUAL,
-    GREATER,LESS,
-    TRUE,FALSE,
-
-    AND,CLASS,ELSE,ELIF,
-    FUNCTION,FOR,
-    IF,NULL_EMPTY,OR,
-    OUT,RETURN,WHILE,VOID,
-
-    ERR,
-    ParsingSuccess
-};
-
-class Token {
-
-    public:
-        TokenType type;
-        string lexeme;
-        int line;
-
-        Token() {
-            
-        }
-
-        Token(TokenType token_type, string lex, int token_line) {
-            type = token_type;
-            lexeme = lex;
-            line = token_line;
-        }
-
-        string str() {
-            return lexeme + "| line num " + to_string(line);
-        }
-};
 
 struct scanFlags
 {
@@ -59,8 +12,6 @@ struct scanFlags
     bool inString;
     bool commentFound;
 };
-
-vector<Token> tokenStream = {};
 
 void addToken(TokenType token,string lex,int lineNumber)
 {
