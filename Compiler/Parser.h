@@ -5,6 +5,7 @@ using namespace std;
 
 Token ahead_token;
 int TokenPlace = 0;
+bool parsingError = false;
 
 void next() {
     if (TokenPlace < tokenStream.size()) {
@@ -25,6 +26,7 @@ TokenType peekNext() {
 }
 
 void showError(string contextText) {
+    parsingError = true;
     cout << "\n====================ERROR====================";
     cout << "\n" + contextText;
     cout << "\n";
@@ -37,6 +39,7 @@ void showError(string contextText) {
 }
 
 void showError(string contextText, int startingLine) {
+    parsingError = true;
     cout << "\n====================ERROR====================";
     cout << "\n" + contextText;
     cout << "\n";
@@ -173,14 +176,14 @@ void testRecievedTokens() { // for debugging (prints out tokens one after the ot
 void beginParse() {
     int max = tokenStream.size();
 
-    while ((ahead_token.type == SEMICOLON || TokenPlace == 0) && TokenPlace + 1 < max) {
+    while ((ahead_token.type == SEMICOLON || TokenPlace == 0) && TokenPlace + 1 < max && !parsingError) {
         statement();
     }
 
     // checking for successful parsing
     
     next();
-    if (ahead_token.type == ParsingSuccess) {
+    if (ahead_token.type == ParsingSuccess && !parsingError) {
         cout << "\n\n\nSuccess!\n\n\n";
     }
 }
